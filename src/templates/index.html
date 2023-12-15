@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Registro de Cursos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <br>
+    <style>
+        #bienvenida {
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            padding: 50px 0;
+        }
+        #contenido{
+            background-color: white;
+            color: black;
+            text-align: center;
+            padding: 50px 0;
+        }
+        .btn-primary:hover {
+            background-color: #28a745; 
+            border-color: #28a745; 
+            color: #fff; 
+        }
+        .card {
+            transition: 0.3s; 
+        }
+
+        .card:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <section id="bienvenida">
+        <h1>¡GESTION DE CURSOS CON API EN FLASK!</h1>
+    </section>
+
+    <section id="contenido">
+    <div class="container mt-4">
+        <div class="card-deck">
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/registrar.jpg') }}"  class="card-img-top">
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegistrar">Registrar Curso</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/listar.jpg') }}"  class="card-img-top">
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalListar">Listar Cursos</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/verificar.png') }}"  class="card-img-top">
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalVerificar">Verificar Curso</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/eliminar.avif') }}"  class="card-img-top">
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEliminar">Eliminar Curso</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/actualizar.jpg') }}"  class="card-img-top">
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalActualizar">Actualizar Curso</button>
+                </div>
+            </div>
+
+        </div>
+    
+        </section>
+
+        <section id="bienvenida">
+            <h1></h1>
+        </section>
+
+       
+
+        <!-- Aquí van los modales para cada acción -->
+        <!-- Modal Listar Cursos -->
+        <div class="modal fade" id="modalListar" tabindex="-1" role="dialog" aria-labelledby="modalListarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalListarLabel">Listar Cursos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Aquí iría el código para listar los cursos -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Créditos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaCursos">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Verificar Curso -->
+        <div class="modal fade" id="modalVerificar" tabindex="-1" role="dialog" aria-labelledby="modalVerificarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalVerificarLabel">Verificar Curso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="codigoVerificar">Código</label>
+                                <input type="text" class="form-control" id="codigoVerificar" placeholder="Ingrese el código del curso">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="botonBuscar">Buscar</button>
+                            <div class="form-group">
+                                <label for="nombreVerificar">Nombre</label>
+                                <input type="text" class="form-control" id="nombreVerificar" placeholder="Nombre del curso" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="creditosVerificar">Créditos</label>
+                                <input type="number" class="form-control" id="creditosVerificar" placeholder="Créditos del curso" readonly>
+                            </div>
+                            
+                        </form>
+                        <div id="resultadoVerificar"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Registrar Curso -->
+        <div class="modal fade" id="modalRegistrar" tabindex="-1" role="dialog" aria-labelledby="modalRegistrarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalRegistrarLabel">Registrar Curso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="codigo">Código</label>
+                                <input type="text" class="form-control" id="codigo" placeholder="Ingrese el código del curso">
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre del curso">
+                            </div>
+                            <div class="form-group">
+                                <label for="creditos">Créditos</label>
+                                <input type="number" class="form-control" id="creditos" placeholder="Ingrese los créditos del curso">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Eliminar Curso -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEliminarLabel">Eliminar Curso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="codigoEliminar">Código</label>
+                                <input type="text" class="form-control" id="codigoEliminar" placeholder="Ingrese el código del curso a eliminar">
+                            </div>
+                            <button type="button" class="btn btn-danger" id="botonEliminar">Eliminar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Actualizar Curso -->
+        <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalActualizarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalActualizarLabel">Actualizar Curso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="codigoActualizar">Código</label>
+                                <input type="text" class="form-control" id="codigoActualizar" placeholder="Ingrese el código del curso a actualizar">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="botonBuscarActualizar">Buscar</button>
+                            <div class="form-group">
+                                <label for="nombreActualizar">Nombre</label>
+                                <input type="text" class="form-control" id="nombreActualizar" placeholder="Ingrese el nuevo nombre del curso">
+                            </div>
+                            <div class="form-group">
+                                <label for="creditosActualizar">Créditos</label>
+                                <input type="number" class="form-control" id="creditosActualizar" placeholder="Ingrese los nuevos créditos del curso">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="botonActualizar">Actualizar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/listar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/registrar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/verificar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/eliminar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/actualizar.js') }}"></script>
+</body>
+</html>
